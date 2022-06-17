@@ -1,0 +1,4 @@
+snackId, name, type, weight, priceInUSD, brand
+1, lays, chips, 23, 32.2, nestle
+2, snickers, chocolate bar, 10, 11.1, mars
+3, bounty, chocolate bar, 12, 22.2, nestle

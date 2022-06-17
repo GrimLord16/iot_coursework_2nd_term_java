@@ -1,0 +1,6 @@
+id, address, latitude, longitude, capacityOfCell, quantityOfCells, model, snackIds, soldSnackIds
+1, Terniv 17, 37.0, 26.0, 4, 4, bosch, [2, 3], []
+2, Terniv 17, 37.0, 26.0, 4, 4, bosch, [], []
+3, Terniv 17, 37.0, 26.0, 4, 4, bosch, [], []
+6, Terniv 17, 37.0, 26.0, 4, 4, bosch, [], []
+7, Terniv 17, 37.0, 26.0, 4, 4, bosch, [], []
