@@ -61,9 +61,14 @@ public class SnackVendingMachineController {
 
 
     @GetMapping("/{id}/menu")
-    public List<Snack> getMenu(@PathVariable Long id){
+    public HashMap<String, Integer> getMenu(@PathVariable Long id){
         return snackVendingMachineService.getMenu(id);
 
+    }
+
+    @GetMapping("/{id}/snacks")
+    public List<Snack> getSnacksInMachine(@PathVariable Long id){
+        return snackVendingMachineService.getSnacksInMachine(id);
     }
 
     @DeleteMapping("/{id}/snacks/{snackId}")
