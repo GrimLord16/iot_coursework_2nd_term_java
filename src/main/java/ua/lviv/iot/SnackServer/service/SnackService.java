@@ -37,7 +37,7 @@ public class SnackService {
     }
 
     @PostConstruct
-    public void loadMachines() throws IOException {
+    public void loadSnacks() throws IOException {
         if(snackDataStorage.loadMonthSnacksReport(false) != null){
             List<Snack> result = snackDataStorage.loadMonthSnacksReport(false);
             for(Snack snack: result){

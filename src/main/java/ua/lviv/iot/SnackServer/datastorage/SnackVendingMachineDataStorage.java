@@ -148,7 +148,9 @@ public class SnackVendingMachineDataStorage {
         String listStuffing = "";
 
         for (String value : unprocessedValues) {
-            if (value.contains("[") && value.contains("]")) {
+            if (value.equals("null")) {
+                values.add("");
+            } else if (value.contains("[") && value.contains("]")) {
                 if (value.equals("[]")) {
                     values.add("");
                 } else {

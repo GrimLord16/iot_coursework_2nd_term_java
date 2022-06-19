@@ -3,6 +3,7 @@ package ua.lviv.iot.SnackServer.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.lviv.iot.SnackServer.model.Snack;
 import ua.lviv.iot.SnackServer.service.SnackService;
@@ -10,6 +11,7 @@ import ua.lviv.iot.SnackServer.service.SnackService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/snacks")
 public class SnackController {
     @Autowired
     private SnackService snackService;
