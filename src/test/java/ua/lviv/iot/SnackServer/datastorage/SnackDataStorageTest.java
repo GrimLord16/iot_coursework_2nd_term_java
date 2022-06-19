@@ -3,13 +3,13 @@ package ua.lviv.iot.SnackServer.datastorage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ua.lviv.iot.SnackServer.help.DateNow;
 import ua.lviv.iot.SnackServer.model.Snack;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,9 +31,27 @@ public class SnackDataStorageTest {
     @Test
     void saveTodaySnacksReport() {
         snackDataStorage.saveTodaySnacksReport(list, true, false);
-        String dataNow = DateNow.getDateNow();
-        String readerEx = String.format("%s%s%s%s%s", System.getProperty("user.dir"), File.separator, "src\\main\\resources\\snack save test report", File.separator, "expected.csv" );
-        String readerRes = String.format("%s%s%s%s%s", System.getProperty("user.dir"), File.separator, "src\\main\\resources\\snack save test report", File.separator, "snack_" + dataNow + ".csv");
+
+        String year = Integer.toString(LocalDate.now().getYear());
+        String month;
+        String day;
+
+        if (LocalDate.now().getMonthValue() < 10) {
+            month = "0" + LocalDate.now().getMonthValue();
+        } else {
+            month = Integer.toString(LocalDate.now().getMonthValue());
+        }
+
+        if (LocalDate.now().getDayOfMonth() < 10) {
+            day = "0" + LocalDate.now().getDayOfMonth();
+        } else {
+            day = Integer.toString(LocalDate.now().getDayOfMonth());
+        }
+        String readerEx = String.format("%s%s%s%s%s", System.getProperty("user.dir"), File.separator,
+                "src\\main\\resources\\snack save test report", File.separator, "expected.csv" );
+        String readerRes = String.format("%s%s%s%s%s", System.getProperty("user.dir"), File.separator,
+                "src\\main\\resources\\snack save test report", File.separator, "snack_" + year + "-" + month + "-" +
+                        day + ".csv");
 
         try {
             BufferedReader readerResult = new BufferedReader(new FileReader(readerRes));

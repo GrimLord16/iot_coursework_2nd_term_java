@@ -202,8 +202,8 @@ public class SnackVendingMachineDataStorage {
             switch (index) {
                 case 0 -> machine.setId(Long.parseLong(value));
                 case 1 -> machine.setAddress(value);
-                case 2 -> machine.setLatitude(Float.parseFloat(value));
-                case 3 -> machine.setLongitude(Float.parseFloat(value));
+                case 2 -> machine.setLatitude(Double.parseDouble(value));
+                case 3 -> machine.setLongitude(Double.parseDouble(value));
                 case 4 -> machine.setCapacityOfCell(Integer.parseInt(value));
                 case 5 -> machine.setQuantityOfCells(Integer.parseInt(value));
                 case 6 -> machine.setModel(value);
