@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,8 +20,8 @@ public class SnackVendingMachine {
     private int capacityOfCell;
     private int quantityOfCells;
     private String model;
-    List<Long> snackIds = new LinkedList<>();
-    List<Long> soldSnackIds = new LinkedList<>();
+    private List<Long> snackIds = new LinkedList<>();
+    private List<Long> soldSnackIds = new LinkedList<>();
 
     public String getHeaders() {
         return "id, address, latitude, longitude, capacityOfCell, quantityOfCells, model, snackIds, soldSnackIds";
@@ -28,7 +29,7 @@ public class SnackVendingMachine {
 
     public String toCSV() {
         return id + ", " + address + ", " + latitude + ", " + longitude + ", "
-                + capacityOfCell + ", " + quantityOfCells + ", " + model + ", " + snackIds + ", " + soldSnackIds ;
+                + capacityOfCell + ", " + quantityOfCells + ", " + model + ", " + snackIds + ", " + soldSnackIds;
     }
 
 

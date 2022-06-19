@@ -3,7 +3,12 @@ package ua.lviv.iot.SnackServer.datastorage;
 import org.springframework.stereotype.Component;
 import ua.lviv.iot.SnackServer.model.Snack;
 
-import java.io.*;
+
+import java.io.File;
+import java.io.Writer;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,18 +24,17 @@ public class SnackDataStorage {
 
         // Made a different dayNow for our load tests
         int  dayNow;
-        if(loadTest){
+        if (loadTest) {
             dayNow = 3;
-        }
-        else{
+        } else {
             dayNow = LocalDate.now().getDayOfMonth();
         }
 
         // Made a different test paths for our load and save tests
         String testPath = "";
-        if(test) {
+        if (test) {
             testPath += "snack save test ";
-        } else if (loadTest){
+        } else if (loadTest) {
             testPath += "snack load test ";
         }
 
@@ -54,7 +58,7 @@ public class SnackDataStorage {
         File file = new File("src/main/resources/" + testPath + "report/snack_" + year + "-"
                 + month + "-" + day + ".csv");
 
-        try (FileWriter writer = new FileWriter(file)) {
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             writer.write(snacks.get(0).getHeaders() + "\n");
             for (Snack snack : snacks) {
                 writer.write(snack.toCSV() + "\n");
@@ -73,16 +77,15 @@ public class SnackDataStorage {
         String month;
 
         String testPath = "";
-        if(test){
+        if (test) {
             testPath += "snack load test ";
         }
 
         // Made a different dayNow for our tests
         int  dayNow;
-        if(test){
+        if (test) {
             dayNow = 3;
-        }
-        else{
+        } else {
             dayNow = LocalDate.now().getDayOfMonth();
         }
 
@@ -94,13 +97,17 @@ public class SnackDataStorage {
 
         for (int day = 1; day <= dayNow; day++) {
             if (day < 10) {
-                if (Files.exists(Paths.get("src/main/resources/" + testPath + "report/snack_" + year + "-" + month + "-0" + day + ".csv"))) {
-                    file = new File("src/main/resources/" + testPath + "report/snack_" + year + "-" + month + "-0" + day + ".csv");
+                if (Files.exists(Paths.get("src/main/resources/" + testPath + "report/snack_" + year + "-" + month
+                        + "-0" + day + ".csv"))) {
+                    file = new File("src/main/resources/" + testPath + "report/snack_" + year + "-" + month
+                            + "-0" + day + ".csv");
                     resultList.addAll(readSnackFile(file));
                 }
             } else {
-                if (Files.exists(Paths.get("src/main/resources/" + testPath + "report/snack_" + year + "-" + month + "-" + day + ".csv"))) {
-                    file = new File("src/main/resources/" + testPath + "report/snack_" + year + "-" + month + "-" + day + ".csv");
+                if (Files.exists(Paths.get("src/main/resources/" + testPath + "report/snack_" + year + "-" + month
+                        + "-" + day + ".csv"))) {
+                    file = new File("src/main/resources/" + testPath + "report/snack_" + year + "-" + month
+                            + "-" + day + ".csv");
                     resultList.addAll(readSnackFile(file));
                 }
             }
@@ -123,9 +130,9 @@ public class SnackDataStorage {
                 values = Arrays.stream(scanner.nextLine().split(", ")).toList();
 
             }
-            if(values!=null)
+            if (values != null) {
                 resultSnack.add(fillSnack(values));
-
+            }
         }
         return resultSnack;
     }

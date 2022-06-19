@@ -13,9 +13,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
-
-import java.util.*;
 
 @Getter
 @Setter
@@ -26,7 +28,7 @@ public class SnackVendingMachineService {
     @Autowired
     private SnackVendingMachineDataStorage snackVendingMachineDataStorage;
 
-    HashMap<Long,SnackVendingMachine> snackVendingMachines= new HashMap<>();
+    private HashMap<Long, SnackVendingMachine> snackVendingMachines = new HashMap<>();
 
     public HashMap<Long, SnackVendingMachine> getAllMachines() {
         return snackVendingMachines;
@@ -38,7 +40,7 @@ public class SnackVendingMachineService {
 
     }
 
-    public void sellSnack(Long id,Long nameId) {
+    public void sellSnack(Long id, Long nameId) {
         List<Long> newIds = snackVendingMachines.get(id).getSoldSnackIds();
         newIds.add(nameId);
         snackVendingMachines.get(id).setSoldSnackIds(newIds);
@@ -46,10 +48,9 @@ public class SnackVendingMachineService {
     }
 
     public double getDailyRevenue(Long id) {
-        if(LocalTime.now().getHour() < 19) {
+        if (LocalTime.now().getHour() < 19) {
              return 0;
-        }
-        else {
+        } else {
             double result = 0;
             for (Snack snack : snackService.getAllSnacks()) {
                 if (snackVendingMachines.get(id).getSoldSnackIds().contains(snack.getSnackId())) {
@@ -61,13 +62,12 @@ public class SnackVendingMachineService {
     }
 
     public List<Snack> getDailySoldSnacks(Long id) {
-        if(LocalTime.now().getHour() < 19)
+        if (LocalTime.now().getHour() < 19) {
             return null;
-
-        else {
+        } else {
             List<Snack> result = new LinkedList<>();
-            for(Snack snack: snackService.getAllSnacks()) {
-                if(snackVendingMachines.get(id).getSoldSnackIds().contains(snack.getSnackId())){
+            for (Snack snack: snackService.getAllSnacks()) {
+                if (snackVendingMachines.get(id).getSoldSnackIds().contains(snack.getSnackId())) {
                     result.add(snack);
                 }
             }
@@ -77,19 +77,19 @@ public class SnackVendingMachineService {
 
     public List<Snack> getSnacksInMachine(Long id) {
         List<Snack> result = new LinkedList<>();
-        for(Snack snack: snackService.getAllSnacks()) {
-            if(snackVendingMachines.get(id).getSnackIds().contains(snack.getSnackId())){
+        for (Snack snack: snackService.getAllSnacks()) {
+            if (snackVendingMachines.get(id).getSnackIds().contains(snack.getSnackId())) {
                 result.add(snack);
             }
         }
         return result;
     }
 
-    public HashMap<String, Integer> getMenu(Long id){
+    public HashMap<String, Integer> getMenu(Long id) {
         HashMap<String, Integer> menu = new HashMap<>();
         List<Snack> snacks = getSnacksInMachine(id);
-        if (getMachineById(id).getSnackIds() != null){
-            for(Snack snack: snacks){
+        if (getMachineById(id).getSnackIds() != null) {
+            for (Snack snack: snacks) {
                 menu.put(snack.getName(), getQuantityOfSnackByName(id, snack.getName()));
             }
         }
@@ -100,21 +100,21 @@ public class SnackVendingMachineService {
         this.snackVendingMachines.put(snackVendingMachine.getId(), snackVendingMachine);
     }
     public void updateMachine(SnackVendingMachine snackVendingMachine) {
-        if(snackVendingMachines.containsKey(snackVendingMachine.getId())) {
-        this.snackVendingMachines.replace(snackVendingMachine.getId(),snackVendingMachine);
+        if (snackVendingMachines.containsKey(snackVendingMachine.getId())) {
+        this.snackVendingMachines.replace(snackVendingMachine.getId(), snackVendingMachine);
         }
     }
 
     public void deleteMachine(Long id) {
-        if(snackVendingMachines.containsKey(id)){
+        if (snackVendingMachines.containsKey(id)) {
             this.snackVendingMachines.remove(id);
         }
     }
 
     public void addSnack(Long id, Snack snack) {
-        if(snackVendingMachines.get(id).getQuantityOfCells() > getQuantityOfNames(id)){
-            if(this.snackVendingMachines.get(id).getCapacityOfCell() > getQuantityOfSnackByName(id, snack.getName()) ){
-                List<Long> newSnackIds= this.snackVendingMachines.get(id).getSnackIds();
+        if (snackVendingMachines.get(id).getQuantityOfCells() > getQuantityOfNames(id)) {
+            if (this.snackVendingMachines.get(id).getCapacityOfCell() > getQuantityOfSnackByName(id, snack.getName())) {
+                List<Long> newSnackIds = this.snackVendingMachines.get(id).getSnackIds();
                 newSnackIds.add(snack.getSnackId());
                 this.snackVendingMachines.get(id).setSnackIds(newSnackIds);
                 snackService.addSnack(snack);
@@ -125,7 +125,7 @@ public class SnackVendingMachineService {
     public int getQuantityOfNames(Long id) {
         HashMap<String, Integer> mapOfNames = new HashMap<>();
         List<Snack> snacks = getSnacksInMachine(id);
-        for(Snack snack: snacks){
+        for (Snack snack: snacks) {
             mapOfNames.put(snack.getName(), 1);
         }
         return mapOfNames.size();
@@ -133,10 +133,10 @@ public class SnackVendingMachineService {
 
     public int getQuantityOfSnackByName(Long id, String name) {
         int snackQuantity = 0;
-        if(getSnacksInMachine(id) != null) {
+        if (getSnacksInMachine(id) != null) {
             List<Snack> snacks = getSnacksInMachine(id);
-            for(Snack snack: snacks){
-                if(Objects.equals(snack.getName(), name)) {
+            for (Snack snack: snacks) {
+                if (Objects.equals(snack.getName(), name)) {
                     snackQuantity += 1;
                 }
             }
@@ -152,9 +152,9 @@ public class SnackVendingMachineService {
 
     @PostConstruct
     public void loadMachines() throws IOException {
-        if(snackVendingMachineDataStorage.loadMonthMachineReport(false) != null) {
+        if (snackVendingMachineDataStorage.loadMonthMachineReport(false) != null) {
             List<SnackVendingMachine> result = snackVendingMachineDataStorage.loadMonthMachineReport(false);
-            for(SnackVendingMachine machine: result) {
+            for (SnackVendingMachine machine: result) {
                 this.snackVendingMachines.put(machine.getId(), machine);
             }
         }

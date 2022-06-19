@@ -3,33 +3,41 @@ package ua.lviv.iot.SnackServer.datastorage;
 import org.springframework.stereotype.Component;
 import ua.lviv.iot.SnackServer.model.SnackVendingMachine;
 
-import java.io.*;
 
+import java.io.FileOutputStream;
+import java.io.Writer;
+import java.io.File;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.*;
+
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Component
 public class SnackVendingMachineDataStorage {
-    public void saveTodayMachinesReport(List<SnackVendingMachine> machines, boolean test, boolean loadTest ) {
+    public void saveTodayMachinesReport(List<SnackVendingMachine> machines, boolean test, boolean loadTest) {
         // Made a different dayNow for our load tests
         int  dayNow;
-        if(loadTest){
+        if (loadTest) {
             dayNow = 3;
-
-        }
-        else{
+        } else {
             dayNow = LocalDate.now().getDayOfMonth();
         }
 
         // Made a different test paths for our load and save tests
         String testPath = "";
-        if(test) {
+        if (test) {
             testPath += "save test ";
-        } else if (loadTest){
+        } else if (loadTest) {
             testPath += "load test ";
         }
 
@@ -55,13 +63,12 @@ public class SnackVendingMachineDataStorage {
 
 
 
-        try(FileWriter writer = new FileWriter(file)) {
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             writer.write(machines.get(0).getHeaders() + "\n");
-            for(SnackVendingMachine snackVendingMachine: machines){
+            for (SnackVendingMachine snackVendingMachine: machines) {
                 writer.write(snackVendingMachine.toCSV() + "\n");
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -84,16 +91,15 @@ public class SnackVendingMachineDataStorage {
 
         // Made a different path for our tests
         String testPath = "";
-        if(test){
+        if (test) {
             testPath += "load test ";
         }
 
         // Made a different dayNow for our tests
         int  dayNow;
-        if(test){
+        if (test) {
             dayNow = 3;
-        }
-        else{
+        } else {
             dayNow = LocalDate.now().getDayOfMonth();
         }
 
@@ -132,8 +138,9 @@ public class SnackVendingMachineDataStorage {
                 List<String> unprocessedValues = Arrays.stream(scanner.nextLine().split(", ")).toList();
                 values = processWithLists(unprocessedValues);
             }
-            if(values!=null)
+            if (values != null) {
                 resultMachine.add(fillMachine(values));
+            }
 
         }
 
@@ -201,19 +208,19 @@ public class SnackVendingMachineDataStorage {
                 case 5 -> machine.setQuantityOfCells(Integer.parseInt(value));
                 case 6 -> machine.setModel(value);
                 case 7 -> {
-                    if (Objects.equals(value, "")){
+                    if (Objects.equals(value, "")) {
                         List<Long> snackIds = new LinkedList<>();
-                        machine.setSnackIds(snackIds);}
-                    else{
+                        machine.setSnackIds(snackIds);
+                    } else {
                         machine.setSnackIds(Arrays.stream(value.split(", "))
                                 .map(s -> Long.parseLong(s.trim())).collect(Collectors.toList()));
                     }
                 }
                 case 8 -> {
-                    if (Objects.equals(value, "")){
+                    if (Objects.equals(value, "")) {
                         List<Long> soldSnackIds = new LinkedList<>();
-                        machine.setSoldSnackIds(soldSnackIds);}
-                    else{
+                        machine.setSoldSnackIds(soldSnackIds);
+                    } else {
                         machine.setSoldSnackIds(Arrays.stream(value.split(", "))
                                 .map(s -> Long.parseLong(s.trim())).collect(Collectors.toList()));
                     }
