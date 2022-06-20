@@ -2,7 +2,7 @@ package ua.lviv.iot.SnackServer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.lviv.iot.SnackServer.datastorage.SnackDataStorage;
+import ua.lviv.iot.SnackServer.datastorage.SnackToCSV;
 import ua.lviv.iot.SnackServer.model.Snack;
 
 import javax.annotation.PostConstruct;
@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class SnackService {
     @Autowired
-    private SnackDataStorage snackDataStorage;
+    private SnackToCSV snackToCSV;
 
     private final HashMap<Long, Snack> snacks = new HashMap<>();
 
@@ -31,15 +31,15 @@ public class SnackService {
     }
 
     @PreDestroy
-    public void saveSnacksToFile() {
+    public void saveSnacksToFile() throws IOException {
         List<Snack> list = this.snacks.values().stream().toList();
-        snackDataStorage.saveTodaySnacksReport(list, false, false);
+        snackToCSV.saveTodaySnacksReport(list, "main/resources/report", "");
     }
 
     @PostConstruct
     public void loadSnacks() throws IOException {
-        if (snackDataStorage.loadMonthSnacksReport(false) != null) {
-            List<Snack> result = snackDataStorage.loadMonthSnacksReport(false);
+        List<Snack> result = snackToCSV.loadMonthSnacksReport(false);
+        if (result != null) {
             for (Snack snack: result) {
                 this.snacks.put(snack.getSnackId(), snack);
             }

@@ -16,6 +16,8 @@ public class Snack {
 
     private Long snackId;
 
+    private Long machineId;
+
     private String name;
 
     private String type;
@@ -25,10 +27,10 @@ public class Snack {
 
 
     public String getHeaders() {
-        return "snackId, name, type, weight, priceInUSD, brand";
+        return "snackId, machineId, name, type, weight, priceInUSD, brand";
     }
 
     public String toCSV() {
-        return snackId + ", " + name + ", " + type + ", " + weight + ", " + priceInUSD + ", " + brand;
+        return snackId + ", " + machineId + ", " + name + ", " + type + ", " + weight + ", " + priceInUSD + ", " + brand;
     }
 }

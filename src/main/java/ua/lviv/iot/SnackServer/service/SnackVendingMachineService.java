@@ -1,10 +1,11 @@
 package ua.lviv.iot.SnackServer.service;
 
-import lombok.Getter;
-import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import ua.lviv.iot.SnackServer.datastorage.SnackVendingMachineDataStorage;
+import org.springframework.web.server.ResponseStatusException;
+import ua.lviv.iot.SnackServer.datastorage.SnackVendingMachineToCSV;
 import ua.lviv.iot.SnackServer.model.Snack;
 import ua.lviv.iot.SnackServer.model.SnackVendingMachine;
 
@@ -19,33 +20,54 @@ import java.util.List;
 import java.util.Objects;
 
 
-@Getter
-@Setter
+
 @Service
 public class SnackVendingMachineService {
     @Autowired
     private SnackService snackService;
     @Autowired
-    private SnackVendingMachineDataStorage snackVendingMachineDataStorage;
+    private SnackVendingMachineToCSV snackVendingMachineToCSV;
 
-    private HashMap<Long, SnackVendingMachine> snackVendingMachines = new HashMap<>();
+    private final HashMap<Long, SnackVendingMachine> snackVendingMachines = new HashMap<>();
+    private final List<Long> soldSnackIds = new LinkedList<>();
+    private final List<Long> snackIds = new LinkedList<>();
 
+    //Methods that manipulate with machines
     public HashMap<Long, SnackVendingMachine> getAllMachines() {
         return snackVendingMachines;
     }
 
     public SnackVendingMachine getMachineById(Long id) {
-
-        return snackVendingMachines.get(id);
+        if (snackVendingMachines.containsKey(id)) {
+            return snackVendingMachines.get(id);
+        } else throw new ResponseStatusException (
+                HttpStatus.NOT_FOUND, "entity not found"
+        );
 
     }
 
-    public void sellSnack(Long id, Long nameId) {
-        List<Long> newIds = snackVendingMachines.get(id).getSoldSnackIds();
-        newIds.add(nameId);
-        snackVendingMachines.get(id).setSoldSnackIds(newIds);
-        snackVendingMachines.get(id).getSnackIds().remove(nameId);
+    public void createMachine(SnackVendingMachine snackVendingMachine) {
+        if (!snackVendingMachines.containsKey(snackVendingMachine.getId())) {
+            this.snackVendingMachines.put(snackVendingMachine.getId(), snackVendingMachine);
+        }
     }
+
+    public void updateMachine(SnackVendingMachine snackVendingMachine) {
+        if (snackVendingMachines.containsKey(snackVendingMachine.getId())) {
+            this.snackVendingMachines.replace(snackVendingMachine.getId(), snackVendingMachine);
+        } else throw new ResponseStatusException (
+                HttpStatus.NOT_FOUND, "entity not found"
+        );
+    }
+
+    public void deleteMachine(Long id) {
+        if (snackVendingMachines.containsKey(id)) {
+            this.snackVendingMachines.remove(id);
+        }
+    }
+
+
+    //Methods to manipulate snacks in machine
 
     public double getDailyRevenue(Long id) {
         if (LocalTime.now().getHour() < 19) {
@@ -53,8 +75,10 @@ public class SnackVendingMachineService {
         } else {
             double result = 0;
             for (Snack snack : snackService.getAllSnacks()) {
-                if (snackVendingMachines.get(id).getSoldSnackIds().contains(snack.getSnackId())) {
-                    result += snack.getPriceInUSD();
+                if (Objects.equals(snack.getMachineId(), id)){
+                    if (soldSnackIds.contains(snack.getSnackId())) {
+                        result += snack.getPriceInUSD();
+                    }
                 }
             }
             return result;
@@ -67,70 +91,91 @@ public class SnackVendingMachineService {
         } else {
             List<Snack> result = new LinkedList<>();
             for (Snack snack: snackService.getAllSnacks()) {
-                if (snackVendingMachines.get(id).getSoldSnackIds().contains(snack.getSnackId())) {
-                    result.add(snack);
+                if (Objects.equals(snack.getMachineId(), id)){
+                    if (soldSnackIds.contains(snack.getSnackId())) {
+                        result.add(snack);
+                    }
                 }
             }
             return result;
         }
     }
 
-    public List<Snack> getSnacksInMachine(Long id) {
-        List<Snack> result = new LinkedList<>();
-        for (Snack snack: snackService.getAllSnacks()) {
-            if (snackVendingMachines.get(id).getSnackIds().contains(snack.getSnackId())) {
-                result.add(snack);
-            }
-        }
-        return result;
-    }
 
     public HashMap<String, Integer> getMenu(Long id) {
         HashMap<String, Integer> menu = new HashMap<>();
-        List<Snack> snacks = getSnacksInMachine(id);
-        if (getMachineById(id).getSnackIds() != null) {
-            for (Snack snack: snacks) {
+        if (getSnacksInMachine(id) != null) {
+            for (Snack snack: getSnacksInMachine(id)) {
                 menu.put(snack.getName(), getQuantityOfSnackByName(id, snack.getName()));
             }
         }
         return menu;
     }
 
-    public void createMachine(SnackVendingMachine snackVendingMachine) {
-        if (!snackVendingMachines.containsKey(snackVendingMachine.getId())) {
-            this.snackVendingMachines.put(snackVendingMachine.getId(), snackVendingMachine);
-        }
-    }
-    public void updateMachine(SnackVendingMachine snackVendingMachine) {
-        if (snackVendingMachines.containsKey(snackVendingMachine.getId())) {
-        this.snackVendingMachines.replace(snackVendingMachine.getId(), snackVendingMachine);
-        }
+
+    public void sellSnack(Long id, Long snackId) {
+        if (getSnackIdsInMachine(id).contains(snackId)) {
+            snackIds.remove(snackId);
+            soldSnackIds.add(snackId);
+        } else throw new ResponseStatusException (
+                HttpStatus.NOT_FOUND, "entity not found"
+        );
     }
 
-    public void deleteMachine(Long id) {
-        if (snackVendingMachines.containsKey(id)) {
-            this.snackVendingMachines.remove(id);
-        }
-    }
 
     public void addSnack(Long id, Snack snack) {
-        if (snackVendingMachines.get(id).getQuantityOfCells() > getQuantityOfNames(id)) {
-            if (this.snackVendingMachines.get(id).getCapacityOfCell() > getQuantityOfSnackByName(id, snack.getName())) {
-                List<Long> newSnackIds = this.snackVendingMachines.get(id).getSnackIds();
-                newSnackIds.add(snack.getSnackId());
-                this.snackVendingMachines.get(id).setSnackIds(newSnackIds);
-                snackService.addSnack(snack);
+        if(snackIds.contains(snack.getSnackId()) || soldSnackIds.contains(snack.getSnackId())){
+            throw new ResponseStatusException (
+                    HttpStatus.CONFLICT, "this id is already used, please use another id"
+            );
+        } else {
+            if ((snackVendingMachines.get(id).getQuantityOfCells() > getQuantityOfNames(id)) || (snackListToNameList(getSnacksInMachine(id)).contains(snack.getName()))) {
+                if (this.snackVendingMachines.get(id).getCapacityOfCell() > getQuantityOfSnackByName(id, snack.getName())) {
+                    snack.setMachineId(id);
+                    snackService.addSnack(snack);
+                    snackIds.add(snack.getSnackId());
+                    throw new ResponseStatusException (
+                            HttpStatus.CREATED, "entity is created"
+                    );
+                } else throw new ResponseStatusException (
+                            HttpStatus.CONFLICT, "The Cell is full, please use another type of snack"
+                    );
+            } else throw new ResponseStatusException (
+                        HttpStatus.CONFLICT, "Snack vending machine is full"
+                );
+        }
+    }
+
+    public List<Snack> getSnacksInMachine(Long id) {
+        List<Snack> snacks = new LinkedList<>();
+        for (Snack snack: snackService.getAllSnacks()) {
+            if (Objects.equals(snack.getMachineId(), id)){
+                snacks.add(snack);
             }
         }
+        return snacks;
+    }
+
+    //Supplementary methods to help
+    public List<String> snackListToNameList(List<Snack> snacks){
+        List<String> names = new LinkedList<>();
+        for (Snack snack: snacks) {
+            names.add(snack.getName());
+        }
+        return names;
     }
 
     public int getQuantityOfNames(Long id) {
         HashMap<String, Integer> mapOfNames = new HashMap<>();
+        int result = 0;
         List<Snack> snacks = getSnacksInMachine(id);
-        for (Snack snack: snacks) {
-            mapOfNames.put(snack.getName(), 1);
+        if (snacks != null){
+            for (Snack snack: snacks) {
+                mapOfNames.put(snack.getName(), 1);
+            }
+            result = mapOfNames.size();
         }
-        return mapOfNames.size();
+        return result;
     }
 
     public int getQuantityOfSnackByName(Long id, String name) {
@@ -146,16 +191,27 @@ public class SnackVendingMachineService {
         return snackQuantity;
     }
 
+    public List<Long> getSnackIdsInMachine(Long id) {
+        List<Long> snackIds = new LinkedList<>();
+        for (Snack snack: getSnacksInMachine(id)) {
+            snackIds.add(snack.getSnackId());
+        }
+        return snackIds;
+    }
+
+
+    //Methods that happen at the beginning and at the end of program
+
     @PreDestroy
-    public void saveMachines() {
+    public void saveMachines() throws IOException {
         List<SnackVendingMachine> list = this.snackVendingMachines.values().stream().toList();
-        snackVendingMachineDataStorage.saveTodayMachinesReport(list, false, false);
+        snackVendingMachineToCSV.saveTodayMachinesReport(list, false, false);
     }
 
     @PostConstruct
     public void loadMachines() throws IOException {
-        if (snackVendingMachineDataStorage.loadMonthMachineReport(false) != null) {
-            List<SnackVendingMachine> result = snackVendingMachineDataStorage.loadMonthMachineReport(false);
+        List<SnackVendingMachine> result = snackVendingMachineToCSV.loadMonthMachineReport(false);
+        if (result != null) {
             for (SnackVendingMachine machine: result) {
                 this.snackVendingMachines.put(machine.getId(), machine);
             }

@@ -1,7 +1,6 @@
 package ua.lviv.iot.SnackServer.controller;
 
-import lombok.Getter;
-import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +19,7 @@ import ua.lviv.iot.SnackServer.model.SnackVendingMachine;
 import java.util.HashMap;
 import java.util.List;
 
-@Getter
-@Setter
+
 @RestController
 @RequestMapping("/snack-vending-machines")
 public class SnackVendingMachineController {
