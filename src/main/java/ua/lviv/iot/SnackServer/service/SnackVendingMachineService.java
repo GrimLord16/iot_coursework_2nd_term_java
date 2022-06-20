@@ -97,7 +97,9 @@ public class SnackVendingMachineService {
     }
 
     public void createMachine(SnackVendingMachine snackVendingMachine) {
-        this.snackVendingMachines.put(snackVendingMachine.getId(), snackVendingMachine);
+        if (!snackVendingMachines.containsKey(snackVendingMachine.getId())) {
+            this.snackVendingMachines.put(snackVendingMachine.getId(), snackVendingMachine);
+        }
     }
     public void updateMachine(SnackVendingMachine snackVendingMachine) {
         if (snackVendingMachines.containsKey(snackVendingMachine.getId())) {
