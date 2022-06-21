@@ -34,7 +34,7 @@ public class SnackService {
 
     @PreDestroy
     public void saveSnacksToFile() throws IOException {
-        String path = "main/resources/report";
+        String path = "main";
         String date = DateNow.getDateNow();
         List<Snack> list = this.snacks.values().stream().toList();
         snackToCSV.saveTodaySnacksReport(list, path, date);

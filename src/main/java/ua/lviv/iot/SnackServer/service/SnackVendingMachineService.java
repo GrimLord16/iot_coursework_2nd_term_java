@@ -16,11 +16,7 @@ import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-
+import java.util.*;
 
 
 @Service
@@ -33,6 +29,8 @@ public class SnackVendingMachineService {
     private final HashMap<Long, SnackVendingMachine> snackVendingMachines = new HashMap<>();
     private final List<Long> soldSnackIds = new LinkedList<>();
     private final List<Long> snackIds = new LinkedList<>();
+
+    private static Long snackId = 1L;
 
     //Methods that manipulate with machines
     public HashMap<Long, SnackVendingMachine> getAllMachines() {
@@ -134,6 +132,8 @@ public class SnackVendingMachineService {
             if ((snackVendingMachines.get(id).getQuantityOfCells() > getQuantityOfNames(id)) || (snackListToNameList(getSnacksInMachine(id)).contains(snack.getName()))) {
                 if (this.snackVendingMachines.get(id).getCapacityOfCell() > getQuantityOfSnackByName(id, snack.getName())) {
                     snack.setMachineId(id);
+                    snack.setSnackId(snackId);
+                    snackId += 1;
                     snackService.addSnack(snack);
                     snackIds.add(snack.getSnackId());
                     throw new ResponseStatusException (
@@ -206,7 +206,7 @@ public class SnackVendingMachineService {
 
     @PreDestroy
     public void saveMachines() throws IOException {
-        String path = "main/resources/report";
+        String path = "main";
         String date = DateNow.getDateNow();
         List<SnackVendingMachine> list = this.snackVendingMachines.values().stream().toList();
         snackVendingMachineToCSV.saveTodayMachinesReport(list, path, date);
@@ -221,5 +221,13 @@ public class SnackVendingMachineService {
                 this.snackVendingMachines.put(machine.getId(), machine);
             }
         }
+    }
+    @PostConstruct
+    public void InitializeSnackId(){
+
+        for (int i = 0; i < snackService.getAllSnacks().size(); i++ ) {
+            snackId += 1;
+        }
+
     }
 }
