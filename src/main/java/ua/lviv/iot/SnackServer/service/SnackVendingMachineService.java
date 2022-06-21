@@ -8,11 +8,13 @@ import org.springframework.web.server.ResponseStatusException;
 import ua.lviv.iot.SnackServer.datastorage.SnackVendingMachineToCSV;
 import ua.lviv.iot.SnackServer.model.Snack;
 import ua.lviv.iot.SnackServer.model.SnackVendingMachine;
+import ua.lviv.iot.SnackServer.utils.DateNow;
 
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -204,13 +206,16 @@ public class SnackVendingMachineService {
 
     @PreDestroy
     public void saveMachines() throws IOException {
+        String path = "main/resources/report";
+        String date = DateNow.getDateNow();
         List<SnackVendingMachine> list = this.snackVendingMachines.values().stream().toList();
-        snackVendingMachineToCSV.saveTodayMachinesReport(list, false, false);
+        snackVendingMachineToCSV.saveTodayMachinesReport(list, path, date);
     }
 
     @PostConstruct
     public void loadMachines() throws IOException {
-        List<SnackVendingMachine> result = snackVendingMachineToCSV.loadMonthMachineReport(false);
+        int day = LocalDate.now().getDayOfMonth();
+        List<SnackVendingMachine> result = snackVendingMachineToCSV.loadMonthMachineReport(day);
         if (result != null) {
             for (SnackVendingMachine machine: result) {
                 this.snackVendingMachines.put(machine.getId(), machine);

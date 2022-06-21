@@ -18,42 +18,11 @@ import java.util.Scanner;
 
 @Component
 public class SnackVendingMachineToCSV {
-    public void saveTodayMachinesReport(List<SnackVendingMachine> machines, boolean test, boolean loadTest) throws IOException {
+    public void saveTodayMachinesReport(List<SnackVendingMachine> machines, String Path, String fileName) throws IOException {
         // Made a different dayNow for our load tests
-        int  dayNow;
-        if (loadTest) {
-            dayNow = 3;
-        } else {
-            dayNow = LocalDate.now().getDayOfMonth();
-        }
-
-        // Made a different test paths for our load and save tests
-        String testPath = "";
-        if (test) {
-            testPath += "save test ";
-        } else if (loadTest) {
-            testPath += "load test ";
-        }
-
-        String year = Integer.toString(LocalDate.now().getYear());
-        String month;
-        String day;
-
-        if (LocalDate.now().getMonthValue() < 10) {
-            month = "0" + LocalDate.now().getMonthValue();
-        } else {
-            month = Integer.toString(LocalDate.now().getMonthValue());
-        }
-
-        if (dayNow < 10) {
-            day = "0" + dayNow;
-        } else {
-            day = Integer.toString(dayNow);
-        }
 
 
-        File file = new File("src/main/resources/" + testPath + "report/snack-vending-machines_" + year + "-"
-            + month + "-" + day + ".csv");
+        File file = new File("src/" + Path + "/resources/report/snack-vending-machines_" + fileName + ".csv");
 
         Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
         writer.write(machines.get(0).getHeaders() + "\n");
@@ -65,7 +34,7 @@ public class SnackVendingMachineToCSV {
 
     }
 
-    public List<SnackVendingMachine> loadMonthMachineReport(boolean test) throws IOException {
+    public List<SnackVendingMachine> loadMonthMachineReport(int dayNow) throws IOException {
         List<SnackVendingMachine> resultList = new LinkedList<>();
         File file;
 
@@ -80,32 +49,19 @@ public class SnackVendingMachineToCSV {
             month = Integer.toString(LocalDate.now().getMonthValue());
         }
 
-        // Made a different path for our tests
-        String testPath = "";
-        if (test) {
-            testPath += "load test ";
-        }
-
-        // Made a different dayNow for our tests
-        int  dayNow;
-        if (test) {
-            dayNow = 3;
-        } else {
-            dayNow = LocalDate.now().getDayOfMonth();
-        }
 
         for (int day = 1; day <= dayNow; day++) {
             if (day < 10) {
-                if (Files.exists(Paths.get("src/main/resources/" + testPath + "report/snack-vending-machines_"
+                if (Files.exists(Paths.get("src/main/resources/report/snack-vending-machines_"
                         + year + "-" + month + "-0" + day + ".csv"))) {
-                    file = new File("src/main/resources/" + testPath + "report/snack-vending-machines_"
+                    file = new File("src/main/resources/report/snack-vending-machines_"
                             + year + "-" + month + "-0" + day + ".csv");
                     resultList.addAll(readMachineFile(file));
                 }
             } else {
-                if (Files.exists(Paths.get("src/main/resources/" + testPath + "report/snack-vending-machines_"
+                if (Files.exists(Paths.get("src/main/resources/report/snack-vending-machines_"
                         + year + "-" + month + "-" + day + ".csv"))) {
-                    file = new File("src/main/resources/" + testPath + "report/snack-vending-machines_"
+                    file = new File("src/main/resources/report/snack-vending-machines_"
                             + year + "-" + month + "-" + day + ".csv");
                     resultList.addAll(readMachineFile(file));
                 }

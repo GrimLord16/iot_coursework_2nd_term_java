@@ -1,4 +1,0 @@
-id, address, latitude, longitude, capacityOfCell, quantityOfCells, model, snackIds, soldSnackIds
-1, Herbs Street, 23.299999237060547, 23.299999237060547, 4, 4, dorcel, [1, 2, 4], []
-2, Dirt Street, 26.399999618530273, 43.400001525878906, 4, 4, samsung, [5, 6, 7], []
-3, Pond Street, 54.400001525878906, 67.5, 4, 4, samsung, [9, 11, 12], []

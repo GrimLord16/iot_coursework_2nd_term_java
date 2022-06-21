@@ -2,7 +2,6 @@ package ua.lviv.iot.SnackServer.datastorage;
 
 import org.springframework.stereotype.Component;
 import ua.lviv.iot.SnackServer.model.Snack;
-import ua.lviv.iot.SnackServer.utils.DateNow;
 
 
 import java.io.File;
@@ -23,7 +22,7 @@ import java.util.Scanner;
 public class SnackToCSV {
     public void saveTodaySnacksReport(List<Snack> snacks, String Path, String fileName) throws IOException {
 
-        File file = new File("src" + Path + "/resources/report/snack_" + fileName + ".csv");
+        File file = new File("src/" + Path + "/resources/report/snack_" + fileName + ".csv");
         Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 
         writer.write(snacks.get(0).getHeaders() + "\n");
@@ -34,25 +33,15 @@ public class SnackToCSV {
 
     }
 
-    public List<Snack> loadMonthSnacksReport(boolean test) throws IOException {
+    public List<Snack> loadMonthSnacksReport(int dayNow) throws IOException {
         List<Snack> resultList = new LinkedList<>();
         File file;
 
         String year = Integer.toString(LocalDate.now().getYear());
         String month;
 
-        String testPath = "";
-        if (test) {
-            testPath += "snack load test ";
-        }
-
         // Made a different dayNow for our tests
-        int  dayNow;
-        if (test) {
-            dayNow = 3;
-        } else {
-            dayNow = LocalDate.now().getDayOfMonth();
-        }
+
 
         if (LocalDate.now().getMonthValue() < 10) {
             month = "0" + LocalDate.now().getMonthValue();
@@ -62,16 +51,16 @@ public class SnackToCSV {
 
         for (int day = 1; day <= dayNow; day++) {
             if (day < 10) {
-                if (Files.exists(Paths.get("src/main/resources/" + testPath + "report/snack_" + year + "-" + month
+                if (Files.exists(Paths.get("src/main/resources/report/snack_" + year + "-" + month
                         + "-0" + day + ".csv"))) {
-                    file = new File("src/main/resources/" + testPath + "report/snack_" + year + "-" + month
+                    file = new File("src/main/resources/report/snack_" + year + "-" + month
                             + "-0" + day + ".csv");
                     resultList.addAll(readSnackFile(file));
                 }
             } else {
-                if (Files.exists(Paths.get("src/main/resources/" + testPath + "report/snack_" + year + "-" + month
+                if (Files.exists(Paths.get("src/main/resources/report/snack_" + year + "-" + month
                         + "-" + day + ".csv"))) {
-                    file = new File("src/main/resources/" + testPath + "report/snack_" + year + "-" + month
+                    file = new File("src/main/resources/report/snack_" + year + "-" + month
                             + "-" + day + ".csv");
                     resultList.addAll(readSnackFile(file));
                 }

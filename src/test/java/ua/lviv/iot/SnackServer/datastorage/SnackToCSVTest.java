@@ -14,19 +14,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class SnackToCSVTest {
-    List<Snack> list = new LinkedList<>();
+    List<Snack> list = new ArrayList<>();
+    HashMap<Long, Snack> snacks = new HashMap<>();
     SnackToCSV snackToCSV = new SnackToCSV();
 
     @BeforeEach
     void setUp(){
 
-        Snack snack1 = new Snack(1L, 2L, "lays", "chips", 23, 32.2, "nestle");
-        Snack snack2 = new Snack(2L, 2L, "snickers", "chocolate bar", 10, 11.1, "mars");
-        Snack snack3 = new Snack(3L, 2L, "bounty", "chocolate bar", 12, 22.2, "nestle");
+        Snack snack1 = new Snack(1L, 1L, "snickers medium", "chocolate bar", 4, 12.0, "mars");
+        Snack snack2 = new Snack(2L, 1L, "snickers medium", "chocolate bar", 4, 12.0, "mars");
+        Snack snack3 = new Snack(3L, 1L, "snickers medium", "chocolate bar", 4, 12.0, "mars");
         list.add(snack1);
         list.add(snack2);
         list.add(snack3);
@@ -35,30 +38,44 @@ public class SnackToCSVTest {
 
     @Test
     void saveTodaySnacksReport() throws IOException {
-        snackToCSV.saveTodaySnacksReport(list, true, false);
-        String date = DateNow.getDateNow();
+        String path = "test";
+
+        File directory = new File("src/test/resources/report");
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        snackToCSV.saveTodaySnacksReport(list, path, path);
+
+        BufferedReader expectedBf = new BufferedReader(new FileReader("src/main/resources/report/snack_2022-06-19.csv"));
+        BufferedReader actualBf = new BufferedReader(new FileReader("src/test/resources/report/snack_test.csv"));
+
+        String line;
+        while (((line = expectedBf.readLine()) != null) || (actualBf.readLine() != null)) {
+            Assertions.assertEquals(line, actualBf.readLine());
+        }
 
 
-        Path expected = Paths.get("src/test/resources/report/expected.csv");
-        Path actual = Paths.get("src/test/resources/report/actual.csv");
-        byte[] file1 = Files.readAllBytes(expected);
-        byte[] file2 = Files.readAllBytes(actual);
-        Assertions.assertArrayEquals(file1, file2);
+
 
     }
     @Test
     void loadMonthSnacksReport() throws IOException, IndexOutOfBoundsException {
-        String date = DateNow.getDateNow();
-        List<Snack> result = snackToCSV.loadMonthSnacksReport(true);
-        snackToCSV.saveTodaySnacksReport(result,false, true);
-        String readerEx = String.format("%s%s%s%s%s", System.getProperty("user.dir"), File.separator, "src\\main\\resources\\snack load test report", File.separator, "expected.csv" );
-        String readerRes = String.format("%s%s%s%s%s", System.getProperty("user.dir"), File.separator, "src\\main\\resources\\snack load test report", File.separator, "snack_2022-06-03.csv");
+        String path = "test";
+        String fileName = "load test";
+        File directory = new File("src/test/resources/report");
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        List<Snack> result = snackToCSV.loadMonthSnacksReport(19);
+        snackToCSV.saveTodaySnacksReport(result, path, fileName);
+        BufferedReader expectedBf = new BufferedReader(new FileReader("src/main/resources/report/snack_2022-06-19.csv"));
+        BufferedReader actualBf = new BufferedReader(new FileReader("src/test/resources/report/snack_load test.csv"));
 
-        Path expected = Paths.get("src/test/resources/parkingSpot_" + date + ".csv");
-        Path actual = Paths.get("src/main/resources/parkingSpot.csv");
-        byte[] file1 = Files.readAllBytes(expected);
-        byte[] file2 = Files.readAllBytes(actual);
-        Assertions.assertArrayEquals(file1, file2);
+        String line;
+        while (((line = expectedBf.readLine()) != null) || (actualBf.readLine() != null)) {
+            Assertions.assertEquals(line, actualBf.readLine());
+        }
+
 
     }
 }
