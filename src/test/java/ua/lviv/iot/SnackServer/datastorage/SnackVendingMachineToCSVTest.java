@@ -46,6 +46,9 @@ public class SnackVendingMachineToCSVTest {
             Assertions.assertEquals(line, actualBf.readLine());
         }
 
+        expectedBf.close();
+        actualBf.close();
+
     }
 
     @Test
@@ -67,6 +70,9 @@ public class SnackVendingMachineToCSVTest {
         while (((line = expectedBf.readLine()) != null) || (actualBf.readLine() != null)) {
             Assertions.assertEquals(line, actualBf.readLine());
         }
+
+        expectedBf.close();
+        actualBf.close();
 
     }
 

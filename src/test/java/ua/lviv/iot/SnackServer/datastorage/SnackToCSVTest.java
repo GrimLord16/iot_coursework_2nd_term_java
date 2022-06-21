@@ -54,6 +54,9 @@ public class SnackToCSVTest {
             Assertions.assertEquals(line, actualBf.readLine());
         }
 
+        expectedBf.close();
+        actualBf.close();
+
 
 
 
@@ -75,6 +78,8 @@ public class SnackToCSVTest {
         while (((line = expectedBf.readLine()) != null) || (actualBf.readLine() != null)) {
             Assertions.assertEquals(line, actualBf.readLine());
         }
+        expectedBf.close();
+        actualBf.close();
 
 
     }
