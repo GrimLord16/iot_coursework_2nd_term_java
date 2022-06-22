@@ -4,7 +4,11 @@ import org.springframework.stereotype.Component;
 import ua.lviv.iot.SnackServer.model.SnackVendingMachine;
 
 
-import java.io.*;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
