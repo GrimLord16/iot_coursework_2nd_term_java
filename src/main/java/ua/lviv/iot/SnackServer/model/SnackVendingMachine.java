@@ -16,7 +16,7 @@ public class SnackVendingMachine {
     private int quantityOfCells;
     private String model;
 
-    public String getHeaders() {
+    public String takeHeaders() {
         return "id, address, latitude, longitude, capacityOfCell, quantityOfCells, model";
     }
 

@@ -18,14 +18,14 @@ import java.util.Scanner;
 
 @Component
 public class SnackVendingMachineToCSV {
-    public void saveTodayMachinesReport(List<SnackVendingMachine> machines, String Path, String fileName) throws IOException {
+    public void saveTodayMachinesReport(List<SnackVendingMachine> machines, String path, String fileName) throws IOException {
         // Made a different dayNow for our load tests
 
 
-        File file = new File("src/" + Path + "/resources/report/snack-vending-machines_" + fileName + ".csv");
+        File file = new File("src/" + path + "/resources/report/snack-vending-machines_" + fileName + ".csv");
 
         Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
-        writer.write(machines.get(0).getHeaders() + "\n");
+        writer.write(machines.get(0).takeHeaders() + "\n");
         for (SnackVendingMachine snackVendingMachine: machines) {
             writer.write(snackVendingMachine.toCSV() + "\n");
         }

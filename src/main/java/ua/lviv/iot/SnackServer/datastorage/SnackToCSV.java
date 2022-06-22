@@ -20,12 +20,12 @@ import java.util.Scanner;
 
 @Component
 public class SnackToCSV {
-    public void saveTodaySnacksReport(List<Snack> snacks, String Path, String fileName) throws IOException {
+    public void saveTodaySnacksReport(List<Snack> snacks, String path, String fileName) throws IOException {
 
-        File file = new File("src/" + Path + "/resources/report/snack_" + fileName + ".csv");
+        File file = new File("src/" + path + "/resources/report/snack_" + fileName + ".csv");
         Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 
-        writer.write(snacks.get(0).getHeaders() + "\n");
+        writer.write(snacks.get(0).takeHeaders() + "\n");
         for (Snack snack : snacks) {
             writer.write(snack.toCSV() + "\n");
         }
@@ -103,6 +103,7 @@ public class SnackToCSV {
                 case 4 -> snack.setWeight(Integer.parseInt(value));
                 case 5 -> snack.setPriceInUSD(Float.parseFloat(value));
                 case 6 -> snack.setBrand(value);
+                case 7 -> snack.setSold(Boolean.parseBoolean(value));
             }
             index++;
         }

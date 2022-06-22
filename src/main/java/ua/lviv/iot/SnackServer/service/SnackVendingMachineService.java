@@ -40,9 +40,11 @@ public class SnackVendingMachineService {
     public SnackVendingMachine getMachineById(Long id) {
         if (snackVendingMachines.containsKey(id)) {
             return snackVendingMachines.get(id);
-        } else throw new ResponseStatusException (
-                HttpStatus.NOT_FOUND, "entity not found"
-        );
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
 
     }
 
@@ -55,9 +57,11 @@ public class SnackVendingMachineService {
     public void updateMachine(SnackVendingMachine snackVendingMachine) {
         if (snackVendingMachines.containsKey(snackVendingMachine.getId())) {
             this.snackVendingMachines.replace(snackVendingMachine.getId(), snackVendingMachine);
-        } else throw new ResponseStatusException (
-                HttpStatus.NOT_FOUND, "entity not found"
-        );
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
     }
 
     public void deleteMachine(Long id) {
@@ -75,7 +79,7 @@ public class SnackVendingMachineService {
         } else {
             double result = 0;
             for (Snack snack : snackService.getAllSnacks()) {
-                if (Objects.equals(snack.getMachineId(), id)){
+                if (Objects.equals(snack.getMachineId(), id)) {
                     if (soldSnackIds.contains(snack.getSnackId())) {
                         result += snack.getPriceInUSD();
                     }
@@ -91,7 +95,7 @@ public class SnackVendingMachineService {
         } else {
             List<Snack> result = new LinkedList<>();
             for (Snack snack: snackService.getAllSnacks()) {
-                if (Objects.equals(snack.getMachineId(), id)){
+                if (Objects.equals(snack.getMachineId(), id)) {
                     if (soldSnackIds.contains(snack.getSnackId())) {
                         result.add(snack);
                     }
@@ -115,43 +119,51 @@ public class SnackVendingMachineService {
 
     public void sellSnack(Long id, Long snackId) {
         if (getSnackIdsInMachine(id).contains(snackId)) {
+            snackService.getSnackById(snackId).setSold(true);
             snackIds.remove(snackId);
             soldSnackIds.add(snackId);
-        } else throw new ResponseStatusException (
-                HttpStatus.NOT_FOUND, "entity not found"
-        );
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
     }
 
 
     public void addSnack(Long id, Snack snack) {
-        if(snackIds.contains(snack.getSnackId()) || soldSnackIds.contains(snack.getSnackId())){
-            throw new ResponseStatusException (
+        if (snackIds.contains(snack.getSnackId()) || soldSnackIds.contains(snack.getSnackId())) {
+            throw new ResponseStatusException(
                     HttpStatus.CONFLICT, "this id is already used, please use another id"
             );
         } else {
             if ((snackVendingMachines.get(id).getQuantityOfCells() > getQuantityOfNames(id)) || (snackListToNameList(getSnacksInMachine(id)).contains(snack.getName()))) {
                 if (this.snackVendingMachines.get(id).getCapacityOfCell() > getQuantityOfSnackByName(id, snack.getName())) {
                     snack.setMachineId(id);
+                    snack.setSold(false);
                     snack.setSnackId(snackId);
                     snackId += 1;
                     snackService.addSnack(snack);
                     snackIds.add(snack.getSnackId());
-                    throw new ResponseStatusException (
+                    throw new ResponseStatusException(
                             HttpStatus.CREATED, "entity is created"
                     );
-                } else throw new ResponseStatusException (
+                } else {
+                    throw new ResponseStatusException(
                             HttpStatus.CONFLICT, "The Cell is full, please use another type of snack"
                     );
-            } else throw new ResponseStatusException (
+                }
+            } else {
+                throw new ResponseStatusException(
                         HttpStatus.CONFLICT, "Snack vending machine is full"
                 );
+            }
         }
     }
 
     public List<Snack> getSnacksInMachine(Long id) {
         List<Snack> snacks = new LinkedList<>();
         for (Snack snack: snackService.getAllSnacks()) {
-            if (Objects.equals(snack.getMachineId(), id)){
+            if (Objects.equals(snack.getMachineId(), id)) {
                 snacks.add(snack);
             }
         }
@@ -159,7 +171,7 @@ public class SnackVendingMachineService {
     }
 
     //Supplementary methods to help
-    public List<String> snackListToNameList(List<Snack> snacks){
+    public List<String> snackListToNameList(List<Snack> snacks) {
         List<String> names = new LinkedList<>();
         for (Snack snack: snacks) {
             names.add(snack.getName());
@@ -171,7 +183,7 @@ public class SnackVendingMachineService {
         HashMap<String, Integer> mapOfNames = new HashMap<>();
         int result = 0;
         List<Snack> snacks = getSnacksInMachine(id);
-        if (snacks != null){
+        if (snacks != null) {
             for (Snack snack: snacks) {
                 mapOfNames.put(snack.getName(), 1);
             }
@@ -223,9 +235,9 @@ public class SnackVendingMachineService {
         }
     }
     @PostConstruct
-    public void InitializeSnackId(){
+    public void initializeSnackId() {
 
-        for (int i = 0; i < snackService.getAllSnacks().size(); i++ ) {
+        for (int i = 0; i < snackService.getAllSnacks().size(); i++) {
             snackId += 1;
         }
 

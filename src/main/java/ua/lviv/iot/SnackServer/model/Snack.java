@@ -25,12 +25,15 @@ public class Snack {
     private double priceInUSD;
     private String brand;
 
+    private boolean isSold;
 
-    public String getHeaders() {
-        return "snackId, machineId, name, type, weight, priceInUSD, brand";
+
+    public String takeHeaders() {
+        return "snackId, machineId, name, type, weight, priceInUSD, brand, isSold";
     }
 
     public String toCSV() {
-        return snackId + ", " + machineId + ", " + name + ", " + type + ", " + weight + ", " + priceInUSD + ", " + brand;
+        return snackId + ", " + machineId + ", " + name + ", " + type + ", " + weight + ", " + priceInUSD + ", "
+                + brand + ", " + isSold;
     }
 }
