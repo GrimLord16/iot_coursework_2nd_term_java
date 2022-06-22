@@ -10,3 +10,4 @@ snackId, machineId, name, type, weight, priceInUSD, brand, isSold
 9, 8, lays with bacon, chips, 4, 12.0, lays, false
 10, 8, lays with bacon, chips, 4, 12.0, lays, false
 11, 3, lays with bacon, chips, 4, 12.0, lays, false
+12, 3, lays with bacon, chips, 4, 12.0, lays, false

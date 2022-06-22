@@ -77,14 +77,6 @@ public class SnackVendingMachineController {
         return snackVendingMachineService.getSnacksInMachine(id);
     }
 
-    @DeleteMapping("/{id}/snacks/{snackId}")
-    public void sellSnack(@PathVariable Long id, @PathVariable Long snackId) {
-        snackVendingMachineService.sellSnack(id, snackId);
-    }
 
-    @PostMapping("/{id}/snacks")
-    public void addSnack(@PathVariable Long id, @RequestBody Snack snack) {
-        snackVendingMachineService.addSnack(id, snack);
-    }
 
 }
