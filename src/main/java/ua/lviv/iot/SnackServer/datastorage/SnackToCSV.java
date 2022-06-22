@@ -104,6 +104,7 @@ public class SnackToCSV {
                 case 5 -> snack.setPriceInUSD(Float.parseFloat(value));
                 case 6 -> snack.setBrand(value);
                 case 7 -> snack.setSold(Boolean.parseBoolean(value));
+                default -> { }
             }
             index++;
         }

@@ -1,6 +1,7 @@
 package ua.lviv.iot.SnackServer.service;
 
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,10 @@ public class SnackVendingMachineService {
     private final List<Long> soldSnackIds = new LinkedList<>();
     private final List<Long> snackIds = new LinkedList<>();
 
-    private static Long snackId = 1L;
+    private Long snackId = 1L;
 
     //Methods that manipulate with machines
+    @SuppressFBWarnings
     public HashMap<Long, SnackVendingMachine> getAllMachines() {
         return snackVendingMachines;
     }

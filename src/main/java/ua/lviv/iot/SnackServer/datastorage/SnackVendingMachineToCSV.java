@@ -106,6 +106,7 @@ public class SnackVendingMachineToCSV {
                 case 4 -> machine.setCapacityOfCell(Integer.parseInt(value));
                 case 5 -> machine.setQuantityOfCells(Integer.parseInt(value));
                 case 6 -> machine.setModel(value);
+                default -> { }
 
             }
 
