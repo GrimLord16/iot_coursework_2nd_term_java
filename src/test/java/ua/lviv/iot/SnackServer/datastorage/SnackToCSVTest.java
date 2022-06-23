@@ -4,32 +4,24 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ua.lviv.iot.SnackServer.model.Snack;
-import ua.lviv.iot.SnackServer.utils.DateNow;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class SnackToCSVTest {
     List<Snack> list = new ArrayList<>();
-    HashMap<Long, Snack> snacks = new HashMap<>();
     SnackToCSV snackToCSV = new SnackToCSV();
 
     @BeforeEach
     void setUp(){
 
-        Snack snack1 = new Snack(1L, 1L, "snickers medium", "chocolate bar", 4, 12.0, "mars");
-        Snack snack2 = new Snack(2L, 1L, "snickers medium", "chocolate bar", 4, 12.0, "mars");
-        Snack snack3 = new Snack(3L, 1L, "snickers medium", "chocolate bar", 4, 12.0, "mars");
+        Snack snack1 = new Snack(1L, 1L, "snickers medium", "chocolate bar", 4, 12.0, "mars", false);
+        Snack snack2 = new Snack(2L, 1L, "snickers medium", "chocolate bar", 4, 12.0, "mars", false);
+        Snack snack3 = new Snack(3L, 1L, "snickers medium", "chocolate bar", 4, 12.0, "mars", false);
         list.add(snack1);
         list.add(snack2);
         list.add(snack3);
