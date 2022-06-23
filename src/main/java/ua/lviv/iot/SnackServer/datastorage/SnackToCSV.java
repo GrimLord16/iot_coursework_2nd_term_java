@@ -92,23 +92,10 @@ public class SnackToCSV {
     }
 
     private Snack fillSnack(List<String> values) {
-        Snack snack = new Snack();
-        int index = 0;
-        for (String value : values) {
-            switch (index) {
-                case 0 -> snack.setSnackId(Long.parseLong(value));
-                case 1 -> snack.setMachineId(Long.parseLong(value));
-                case 2 -> snack.setName(value);
-                case 3 -> snack.setType(value);
-                case 4 -> snack.setWeight(Integer.parseInt(value));
-                case 5 -> snack.setPriceInUSD(Float.parseFloat(value));
-                case 6 -> snack.setBrand(value);
-                case 7 -> snack.setSold(Boolean.parseBoolean(value));
-                default -> { }
-            }
-            index++;
-        }
-        return snack;
+
+        return new Snack(Long.parseLong(values.get(0)), Long.parseLong(values.get(1)), values.get(2),
+                values.get(3), Integer.parseInt(values.get(4)), Double.parseDouble(values.get(5)), values.get(6),
+                Boolean.parseBoolean(values.get(7)));
     }
 }
 

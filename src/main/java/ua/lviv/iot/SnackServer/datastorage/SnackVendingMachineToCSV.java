@@ -99,24 +99,10 @@ public class SnackVendingMachineToCSV {
     }
 
     private SnackVendingMachine fillMachine(List<String> values) {
-        SnackVendingMachine machine = new SnackVendingMachine();
-        int index = 0;
-        for (String value: values) {
-            switch (index) {
-                case 0 -> machine.setId(Long.parseLong(value));
-                case 1 -> machine.setAddress(value);
-                case 2 -> machine.setLatitude(Double.parseDouble(value));
-                case 3 -> machine.setLongitude(Double.parseDouble(value));
-                case 4 -> machine.setCapacityOfCell(Integer.parseInt(value));
-                case 5 -> machine.setQuantityOfCells(Integer.parseInt(value));
-                case 6 -> machine.setModel(value);
-                default -> { }
 
-            }
-
-            index++;
-        }
-        return machine;
+        return new SnackVendingMachine(Long.parseLong(values.get(0)), values.get(1),
+                Double.parseDouble(values.get(2)), Double.parseDouble(values.get(3)), Integer.parseInt(values.get(4)),
+                Integer.parseInt(values.get(5)), values.get(6));
     }
 
 

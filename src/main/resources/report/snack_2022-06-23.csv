@@ -1,7 +1,7 @@
 snackId, machineId, name, type, weight, priceInUSD, brand, isSold
 1, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
-2, 1, snickers medium, chocolate bar, 4, 12.0, mars,false, false
-3, 1, snickers medium, chocolate bar, 4, 12.0, mars,false, false
+2, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
+3, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
 4, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
 5, 8, snickers medium, chocolate bar, 4, 12.0, mars, false
 6, 8, snickers medium, chocolate bar, 4, 12.0, mars, false
@@ -11,3 +11,4 @@ snackId, machineId, name, type, weight, priceInUSD, brand, isSold
 10, 8, lays with bacon, chips, 4, 12.0, lays, false
 11, 3, lays with bacon, chips, 4, 12.0, lays, false
 12, 3, lays with bacon, chips, 4, 12.0, lays, false
+13, 3, lays with bacon, chips, 4, 12.0, lays, false
