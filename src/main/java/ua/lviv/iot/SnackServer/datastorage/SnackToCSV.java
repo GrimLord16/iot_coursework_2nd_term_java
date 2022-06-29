@@ -40,9 +40,6 @@ public class SnackToCSV {
         String year = Integer.toString(LocalDate.now().getYear());
         String month;
 
-        // Made a different dayNow for our tests
-
-
         if (LocalDate.now().getMonthValue() < 10) {
             month = "0" + LocalDate.now().getMonthValue();
         } else {
@@ -95,7 +92,7 @@ public class SnackToCSV {
 
         return new Snack(Long.parseLong(values.get(0)), Long.parseLong(values.get(1)), values.get(2),
                 values.get(3), Integer.parseInt(values.get(4)), Double.parseDouble(values.get(5)), values.get(6),
-                Boolean.parseBoolean(values.get(7)));
+                Boolean.parseBoolean(values.get(7)), Integer.parseInt(values.get(8)));
     }
 }
 

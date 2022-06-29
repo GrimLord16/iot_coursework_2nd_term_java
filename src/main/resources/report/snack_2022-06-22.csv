@@ -1,13 +1,13 @@
-snackId, machineId, name, type, weight, priceInUSD, brand, isSold
-1, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
-2, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
-3, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
-4, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
-5, 8, snickers medium, chocolate bar, 4, 12.0, mars, false
-6, 8, snickers medium, chocolate bar, 4, 12.0, mars, false
-7, 8, lays with cheese, chips, 4, 12.0, lays, false
-8, 8, lays with cheese, chips, 4, 12.0, lays, false
-9, 8, lays with bacon, chips, 4, 12.0, lays, false
-10, 8, lays with bacon, chips, 4, 12.0, lays, false
-11, 3, lays with bacon, chips, 4, 12.0, lays, false
-12, 3, lays with bacon, chips, 4, 12.0, lays, false
+snackId, machineId, name, type, weight, priceInUSD, brand, isSold, quantity
+1, 1, snickers medium, chocolate bar, 4, 12.0, mars, false, 1
+2, 1, snickers medium, chocolate bar, 4, 12.0, mars, false, 1
+3, 1, snickers medium, chocolate bar, 4, 12.0, mars, false, 1
+4, 1, snickers medium, chocolate bar, 4, 12.0, mars, false, 1
+5, 8, snickers medium, chocolate bar, 4, 12.0, mars, false, 1
+6, 8, snickers medium, chocolate bar, 4, 12.0, mars, false, 1
+7, 8, lays with cheese, chips, 4, 12.0, lays, false, 1
+8, 8, lays with cheese, chips, 4, 12.0, lays, false, 1
+9, 8, lays with bacon, chips, 4, 12.0, lays, false, 1
+10, 8, lays with bacon, chips, 4, 12.0, lays, false, 1
+11, 3, lays with bacon, chips, 4, 12.0, lays, false, 1
+12, 3, lays with bacon, chips, 4, 12.0, lays, false, 1

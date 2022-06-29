@@ -38,17 +38,13 @@ public class SnackVendingMachineToCSVTest {
         }
         machineToCSV.saveTodayMachinesReport(list, path, path);
 
-        BufferedReader expectedBf = new BufferedReader(new FileReader("src/main/resources/report/snack-vending-machines_2022-06-15.csv"));
-        BufferedReader actualBf = new BufferedReader(new FileReader("src/test/resources/report/snack-vending-machines_test.csv"));
-
-        String line;
-        while (((line = expectedBf.readLine()) != null) || (actualBf.readLine() != null)) {
-            Assertions.assertEquals(line, actualBf.readLine());
+        try(BufferedReader expectedBf = new BufferedReader(new FileReader("src/main/resources/report/snack-vending-machines_2022-06-15.csv"));
+        BufferedReader actualBf = new BufferedReader(new FileReader("src/test/resources/report/snack-vending-machines_test.csv"))){
+            String line;
+            while (((line = expectedBf.readLine()) != null) || (actualBf.readLine() != null)) {
+                Assertions.assertEquals(line, actualBf.readLine());
+            }
         }
-
-        expectedBf.close();
-        actualBf.close();
-
     }
 
     @Test
@@ -63,17 +59,12 @@ public class SnackVendingMachineToCSVTest {
         String fileName = "load test";
         List<SnackVendingMachine> result = machineToCSV.loadMonthMachineReport(15);
         machineToCSV.saveTodayMachinesReport(result, path, fileName);
-        BufferedReader expectedBf = new BufferedReader(new FileReader("src/main/resources/report/snack-vending-machines_2022-06-15.csv"));
-        BufferedReader actualBf = new BufferedReader(new FileReader("src/test/resources/report/snack-vending-machines_load test.csv"));
-
-        String line;
-        while (((line = expectedBf.readLine()) != null) || (actualBf.readLine() != null)) {
-            Assertions.assertEquals(line, actualBf.readLine());
+        try( BufferedReader expectedBf = new BufferedReader(new FileReader("src/main/resources/report/snack-vending-machines_2022-06-15.csv"));
+             BufferedReader actualBf = new BufferedReader(new FileReader("src/test/resources/report/snack-vending-machines_load test.csv"))) {
+            String line;
+            while (((line = expectedBf.readLine()) != null) || (actualBf.readLine() != null)) {
+                Assertions.assertEquals(line, actualBf.readLine());
+            }
         }
-
-        expectedBf.close();
-        actualBf.close();
-
     }
-
 }

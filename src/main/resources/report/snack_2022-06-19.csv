@@ -1,4 +1,4 @@
-snackId, machineId, name, type, weight, priceInUSD, brand, isSold
-1, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
-2, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
-3, 1, snickers medium, chocolate bar, 4, 12.0, mars, false
+snackId, machineId, name, type, weight, priceInUSD, brand, isSold, quantity
+1, 1, snickers medium, chocolate bar, 4, 12.0, mars, false, 1
+2, 1, snickers medium, chocolate bar, 4, 12.0, mars, false, 1
+3, 1, snickers medium, chocolate bar, 4, 12.0, mars, false, 1

@@ -16,6 +16,7 @@ public class Snack {
 
     private Long snackId;
 
+
     private Long machineId;
 
     private String name;
@@ -27,13 +28,15 @@ public class Snack {
 
     private boolean isSold;
 
+    private int quantity;
+
 
     public String takeHeaders() {
-        return "snackId, machineId, name, type, weight, priceInUSD, brand, isSold";
+        return "snackId, machineId, name, type, weight, priceInUSD, brand, isSold, quantity";
     }
 
     public String toCSV() {
         return snackId + ", " + machineId + ", " + name + ", " + type + ", " + weight + ", " + priceInUSD + ", "
-                + brand + ", " + isSold;
+                + brand + ", " + isSold +", " + quantity;
     }
 }

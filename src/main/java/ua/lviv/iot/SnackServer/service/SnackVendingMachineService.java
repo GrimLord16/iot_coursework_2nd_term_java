@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ua.lviv.iot.SnackServer.datastorage.SnackVendingMachineToCSV;
 import ua.lviv.iot.SnackServer.model.Snack;
 import ua.lviv.iot.SnackServer.model.SnackVendingMachine;
-import ua.lviv.iot.SnackServer.utils.DateNow;
+import ua.lviv.iot.SnackServer.utils.Utils;
 
 
 import javax.annotation.PostConstruct;
@@ -80,7 +80,7 @@ public class SnackVendingMachineService {
 
     public double getDailyRevenue(Long id) {
         if (LocalTime.now().getHour() < 19) {
-             return 0;
+            return 0;
         } else {
             double result = 0;
             for (Snack snack : snackService.getAllSnacks()) {
@@ -224,7 +224,7 @@ public class SnackVendingMachineService {
     @PreDestroy
     public void saveMachines() throws IOException {
         String path = "main";
-        String date = DateNow.getDateNow();
+        String date = Utils.getDateNow();
         List<SnackVendingMachine> list = this.snackVendingMachines.values().stream().toList();
         snackVendingMachineToCSV.saveTodayMachinesReport(list, path, date);
     }

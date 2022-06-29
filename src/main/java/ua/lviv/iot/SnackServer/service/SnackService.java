@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lviv.iot.SnackServer.datastorage.SnackToCSV;
 import ua.lviv.iot.SnackServer.model.Snack;
-import ua.lviv.iot.SnackServer.utils.DateNow;
+import ua.lviv.iot.SnackServer.utils.Utils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -32,10 +32,11 @@ public class SnackService {
         snacks.put(snack.getSnackId(), snack);
     }
 
+
     @PreDestroy
     public void saveSnacksToFile() throws IOException {
         String path = "main";
-        String date = DateNow.getDateNow();
+        String date = Utils.getDateNow();
         List<Snack> list = this.snacks.values().stream().toList();
         snackToCSV.saveTodaySnacksReport(list, path, date);
     }
