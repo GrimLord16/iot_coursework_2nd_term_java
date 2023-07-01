@@ -1,0 +1,302 @@
+{
+	"info": {
+		"_postman_id": "471ea8dd-8c43-4f56-916c-77eb1bb785ce",
+		"name": "CourseWorkCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21467110"
+	},
+	"item": [
+		{
+			"name": "MachineManipulationRequests",
+			"item": [
+				{
+					"name": "get_all_machines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_machine_by_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_machine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"id\" : \"9\",\r\n    \"model\" : \"samsung\",\r\n    \"capacityOfCell\": \"2\",\r\n    \"quantityOfCells\": \"3\",\r\n    \"address\": \"Pond Street\",\r\n    \"longitude\": \"26.2\",\r\n    \"latitude\": \"37.3\",\r\n    \"snackIds\": [],\r\n    \"soldSnackIds\": []\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_machine",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"id\" : \"5\",\r\n    \"model\" : \"samsung\",\r\n    \"capacityOfCell\": \"2\",\r\n    \"quantityOfCells\": \"2\",\r\n    \"address\": \"Dirt Street\",\r\n    \"longitude\": \"26\",\r\n    \"latitude\": \"37\"\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove_machine",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SnacksInMachineRequests",
+			"item": [
+				{
+					"name": "add_snack_into_machine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"name\" : \"lays with bacon\",\r\n    \"type\": \"chips\",\r\n    \"weight\": \"4\",\r\n    \"priceInUSD\": \"12\",\r\n    \"longitude\": \"26\",\r\n    \"brand\": \"lays\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines/3/snacks",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines",
+								"3",
+								"snacks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_menu",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines/8/menu",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines",
+								"8",
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_all_snacks_in_machine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines/1/snacks",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines",
+								"1",
+								"snacks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_sold_snacks_by_machine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines/1/sold-snacks",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines",
+								"1",
+								"sold-snacks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_machine_revenue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines/1/revenue",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines",
+								"1",
+								"revenue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sell_snack_by_id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snack-vending-machines/1/snacks/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snack-vending-machines",
+								"1",
+								"snacks",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SnackRequests",
+			"item": [
+				{
+					"name": "get_all_snacks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snacks",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snacks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_snack_by_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/snacks/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"snacks",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
